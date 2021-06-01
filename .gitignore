@@ -1,0 +1,4 @@
+node_modules
+.parcel-cache
+img
+package-lock.json
