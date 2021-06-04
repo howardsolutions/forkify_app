@@ -39,11 +39,11 @@ const controlSearchResults = async () => {
     const term = searchView.getTerm();
     if (!term) return;
     
-    // pass the term => model => load search result
+    // pass the term => model => load search result (ALL results)
     await model.loadSearchResults(term);
 
-    // render results
-    resultsView.render(model.state.search.results)
+    // render results PER PAGE (10 per page)
+    resultsView.render(model.getSearchResultsPage())
 
   } catch(err) {
     console.log(err)
