@@ -8,6 +8,7 @@ import searchView from './views/searchView.js';
 import resultsView from './views/resultsView.js';
 import bookMarksView from './views/bookMarkView.js';
 import paginationView from './views/paginationView.js';
+import bookMarkView from './views/bookMarkView.js';
 
 // https://forkify-api.herokuapp.com/v2
 // API keys: 8c6e0dce-cf72-4435-9ac8-c24a6b990ee1
@@ -21,16 +22,17 @@ const controlRecipes = async () => {
 
     // show spinner
     recipeView.renderSpinner();
-
-    // 0) update the results view to mark selected search result
-    resultsView.update(model.getSearchResultsPage())
-    bookMarksView.update(model.state.bookmarks);
      
     // 1. LOADING RECIPE DATA
     await model.loadRecipe(id);
 
     // 2. RENDERING Recipe
     recipeView.render(model.state.recipe);
+
+    // 0) update the results view to mark selected search result
+    resultsView.update(model.getSearchResultsPage())
+
+    bookMarksView.update(model.state.bookmarks);
 
   } catch (err) {
     recipeView.renderError();
@@ -92,8 +94,13 @@ const controlAddBookmark = () =>  {
   bookMarksView.render(model.state.bookmarks)
 }
 
+const controlBookmark = () => {
+  bookMarksView.render(model.state.bookmarks)
+}
+
 // INIT 
 const init = () => {
+  bookMarkView.addHandlerRender(controlBookmark);
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerUpdateServings(controlServings);
   searchView.addHandlerRender(controlSearchResults);

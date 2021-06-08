@@ -6,6 +6,9 @@ class BookmarksView extends View {
   _errorMessage = 'No bookmarks yet! Find the recipe and bookmarked it!';
   _message = '';
 
+  addHandlerRender(handler){
+    window.addEventListener('load', handler)
+  }
   _generateMarkup() {
     const id = window.location.hash.slice(1);
 
