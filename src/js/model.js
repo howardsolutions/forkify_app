@@ -9,6 +9,7 @@ export const state = {
     page: 1,
     resultsPerPage: RES_PER_PAGE,
   },
+  bookmarks: [],
 };
 
 export const loadRecipe = async id => {
@@ -28,6 +29,12 @@ export const loadRecipe = async id => {
       publisher: recipe.publisher,
     };
 
+    console.log(state.bookmarks, "bookmarks")
+
+    if (state.bookmarks.some(bookmark => bookmark.id === id)) {
+      state.recipe.bookmarked = true;
+    } else state.recipe.bookmarked = false;
+
   } catch (err) {
     console.error(`${err} 🙄`);
     throw err;
@@ -37,6 +44,7 @@ export const loadRecipe = async id => {
 export const loadSearchResults = async term => {
   try {
     state.search.term = term;
+    state.search.page = 1;
 
     const data = await getJSON(`${API_URL}?search=${term}`);
 
@@ -72,4 +80,23 @@ export const updateServings = newServings => {
   })
 
   state.recipe.servings = newServings;
+}
+
+export const addBookmark = (recipe) => {
+  // add book mark
+  state.bookmarks.push(recipe)
+
+  // Mark current recipe is bookmark
+  if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+}
+
+export const deleteBookmark = id => {
+  // delete bookmark
+  const index = state.bookmarks.findIndex(el => el.id === id);
+  state.bookmarks.splice(index, 1)
+
+  // mark current recipe is NOT bookmark
+  if(state.recipe.id === id) state.recipe.bookmarked = false;
+
+  console.log(state)
 }
