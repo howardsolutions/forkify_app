@@ -9,6 +9,7 @@ import resultsView from './views/resultsView.js';
 import bookMarksView from './views/bookMarkView.js';
 import paginationView from './views/paginationView.js';
 import bookMarkView from './views/bookMarkView.js';
+import addRecipeView from './views/addRecipeView.js';
 
 // https://forkify-api.herokuapp.com/v2
 // API keys: 8c6e0dce-cf72-4435-9ac8-c24a6b990ee1
@@ -98,6 +99,10 @@ const controlBookmark = () => {
   bookMarksView.render(model.state.bookmarks)
 }
 
+const controlAddRecipe = (newRecipe) => {
+  console.log(newRecipe)
+}
+
 // INIT 
 const init = () => {
   bookMarkView.addHandlerRender(controlBookmark);
@@ -106,6 +111,7 @@ const init = () => {
   searchView.addHandlerRender(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
   recipeView.addHandlerAddBookmark(controlAddBookmark);
+  addRecipeView.addHandlerUpload(controlAddRecipe);
 }
 
 init();
