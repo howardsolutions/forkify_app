@@ -33,20 +33,6 @@ class RecipeView extends View {
     })
   }
 
-  renderMessage(message = this._errorMessage) {
-    const markup = `<div class="message">
-      <div>
-        <svg>
-          <use href="${icons}#icon-smile"></use>
-        </svg>
-      </div>
-      <p>${message}</p>
-    </div>`
-
-    this._clear();
-    this._parentElement.insertAdjacentHTML('afterbegin', markup)
-  }
-
   _generateMarkup() {
     console.log(this._data, "data")
     return `
@@ -94,7 +80,7 @@ class RecipeView extends View {
         </div>
       </div>
 
-      <div class="recipe__user-generated">
+      <div class="recipe__user-generated ${this._data.key ? '' : 'hidden'}">
         <svg>
           <use href="${icons}#icon-user"></use>
         </svg>

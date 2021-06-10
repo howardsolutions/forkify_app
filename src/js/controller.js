@@ -6,10 +6,12 @@ import * as model from './model.js';
 import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
 import resultsView from './views/resultsView.js';
-import bookMarksView from './views/bookMarkView.js';
-import paginationView from './views/paginationView.js';
 import bookMarkView from './views/bookMarkView.js';
+import paginationView from './views/paginationView.js';
 import addRecipeView from './views/addRecipeView.js';
+import { async } from 'regenerator-runtime/runtime';
+
+import {CLOSE_FORM_SEC} from './config.js'
 
 // https://forkify-api.herokuapp.com/v2
 // API keys: 8c6e0dce-cf72-4435-9ac8-c24a6b990ee1
@@ -33,7 +35,7 @@ const controlRecipes = async () => {
     // 0) update the results view to mark selected search result
     resultsView.update(model.getSearchResultsPage())
 
-    bookMarksView.update(model.state.bookmarks);
+    bookMarkView.update(model.state.bookmarks);
 
   } catch (err) {
     recipeView.renderError();
@@ -92,15 +94,44 @@ const controlAddBookmark = () =>  {
   recipeView.update(model.state.recipe)
 
   // render the bookmark
-  bookMarksView.render(model.state.bookmarks)
+  bookMarkView.render(model.state.bookmarks)
 }
 
 const controlBookmark = () => {
-  bookMarksView.render(model.state.bookmarks)
+  bookMarkView.render(model.state.bookmarks)
 }
 
-const controlAddRecipe = (newRecipe) => {
-  console.log(newRecipe)
+const controlAddRecipe = async (newRecipe) => {
+  try {
+    //  show loading spinner
+    addRecipeView.renderSpinner()
+
+    // update the new recipe to server => DB
+    await model.updateRecipe(newRecipe)
+
+    console.log(model.state.recipe)
+
+    // RENDER 
+    recipeView.render(model.state.recipe)
+
+    // display success message 
+    addRecipeView.renderMessage()
+
+    // render bookmark view 
+    bookMarkView.render(model.state.bookmarks)
+
+    // change ID in the URL
+    window.history.pushState(null, '', `#${model.state.recipe.id}`)
+
+    // close form window 
+    setTimeout(() => {
+      addRecipeView.toggleWindow();
+    }, (CLOSE_FORM_SEC * 1000));
+
+  } catch (err) {
+    console.error(`🤔🤔${err}`)
+    addRecipeView.renderError(err.message)
+  }
 }
 
 // INIT 
