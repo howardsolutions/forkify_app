@@ -422,10 +422,10 @@ const controlRecipes = async ()=>{
 // SEARCH control
 const controlSearchResults = async ()=>{
     try {
-        _resultsViewJsDefault.default.renderSpinner();
         // get term from Search VIEW
         const term = _searchViewJsDefault.default.getTerm();
         if (!term) return;
+        _resultsViewJsDefault.default.renderSpinner();
         // pass the term => model => load search result (ALL results)
         await _modelJs.loadSearchResults(term);
         // render results PER PAGE (10 per page)
@@ -12294,7 +12294,7 @@ const getJSON = async (url)=>{
             timeout(_configJs.TIMEOUT_SEC)
         ]);
         const data = await res.json();
-        if (!res.ok) throw new Error(`${data.message} (${data.status})`);
+        if (!res.ok) throw new Error(`(${data.status}) ${data.message}`);
         return data;
     } catch (err) {
         throw err;
@@ -12314,7 +12314,7 @@ const sendJSON = async (url, uploadData)=>{
             timeout(_configJs.TIMEOUT_SEC)
         ]);
         const data = await res.json();
-        if (!res.ok) throw new Error(`${data.message} (${data.status})`);
+        if (!res.ok) throw new Error(`(${data.status}) ${data.message}`);
         return data;
     } catch (err) {
         throw err;

@@ -45,11 +45,11 @@ const controlRecipes = async () => {
 // SEARCH control
 const controlSearchResults = async () => {
   try {
-    resultsView.renderSpinner();
-
     // get term from Search VIEW
     const term = searchView.getTerm();
     if (!term) return;
+
+    resultsView.renderSpinner();
     
     // pass the term => model => load search result (ALL results)
     await model.loadSearchResults(term);
